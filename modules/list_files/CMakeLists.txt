@@ -1,8 +1,16 @@
-project(null_gui)
+project(list_files)
 
 set(SOURCE_FILES src/main.cpp)
-set(HEADER_FILES src/project_headers.h)
-set(RESOURCE_FILES res/HELLOWIN.WAV)
+set(HEADER_FILES 
+	src/project_headers.h
+	src/comparator.h
+	src/cplusplus.h
+	src/data.h
+	)
+set(RESOURCE_FILES
+	res/resource.h
+	res/graphicList.rc
+	)
 
 source_group("Source Files" FILES ${SOURCE_FILES})
 source_group("Header Files" FILES ${HEADER_FILES})
@@ -13,25 +21,16 @@ add_executable(${PROJECT_NAME} WIN32
 	${HEADER_FILES}
 	${RESOURCE_FILES}
 	)
-
 target_precompile_headers(${PROJECT_NAME}
 	PRIVATE
-		src/project_headers.h)
-
+		src/project_headers.h
+		)
+target_include_directories(${PROJECT_NAME}
+	PRIVATE
+		res
+		)
 target_link_libraries(${PROJECT_NAME}
 	PRIVATE
-		Winmm.lib
+		Comctl32.lib
 		)
-
 add_compile_definitions(UNICODE _UNICODE)
-
-add_custom_command(
-	TARGET ${PROJECT_NAME}
-	POST_BUILD
-	COMMAND ${CMAKE_COMMAND} -E copy_if_different
-		${CMAKE_CURRENT_LIST_DIR}/res/HELLOWIN.WAV
-		${CMAKE_RUNTIME_OUTPUT_DIRECTORY}/$<CONFIG>/HELLOWIN.WAV
-	COMMENT
-		"Copying *.WAV file..."
-	VERBATIM
-	)
